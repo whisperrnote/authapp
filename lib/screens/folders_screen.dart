@@ -7,10 +7,15 @@ class FoldersScreen extends StatefulWidget {
   State<FoldersScreen> createState() => _FoldersScreenState();
 }
 
-class _FoldersScreenState extends State<FoldersScreen> {
-  String newFolderName = '';
-  String? editingFolderId;
-  final folders = [
+class _FoldersScreenState extends State<FoldersScreen>
+    with SingleTickerProviderStateMixin {
+  final _controller = TextEditingController();
+  String? _editingId;
+  String _newFolderName = '';
+  late AnimationController _animController;
+  late Animation<double> _fadeAnim;
+
+  List<Map<String, dynamic>> folders = [
     {
       'id': '1',
       'name': 'Work',
@@ -42,134 +47,266 @@ class _FoldersScreenState extends State<FoldersScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _animController = AnimationController(
+      duration: const Duration(milliseconds: 300),
+      vsync: this,
+    );
+    _fadeAnim = CurvedAnimation(
+      parent: _animController,
+      curve: Curves.easeInOut,
+    );
+    _animController.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _animController.dispose();
+    super.dispose();
+  }
+
+  void _addFolder() {
+    if (_newFolderName.trim().isEmpty) return;
+    setState(() {
+      folders.add({
+        'id': DateTime.now().millisecondsSinceEpoch.toString(),
+        'name': _newFolderName.trim(),
+        'credentialCount': 0,
+        'totpCount': 0,
+        'color': Colors.grey,
+      });
+      _newFolderName = '';
+      _controller.clear();
+    });
+  }
+
+  void _editFolder(String id, String newName) {
+    setState(() {
+      final idx = folders.indexWhere((f) => f['id'] == id);
+      if (idx != -1) {
+        folders[idx]['name'] = newName;
+      }
+      _editingId = null;
+    });
+  }
+
+  void _deleteFolder(String id) {
+    setState(() {
+      folders.removeWhere((f) => f['id'] == id);
+    });
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Folder deleted')));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Folders')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                const Icon(Icons.create_new_folder_outlined),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter folder name...',
-                    ),
-                    onChanged: (v) => setState(() => newFolderName = v),
-                    onSubmitted: (v) {
-                      // Add folder logic
-                      setState(() => newFolderName = '');
-                    },
-                  ),
+    final isWide = MediaQuery.of(context).size.width > 900;
+    final isTablet = MediaQuery.of(context).size.width > 600;
+    final gridCount = isWide
+        ? 3
+        : isTablet
+        ? 2
+        : 1;
+
+    return FadeTransition(
+      opacity: _fadeAnim,
+      child: Scaffold(
+        appBar: AppBar(title: const Text('Folders')),
+        body: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              // Add New Folder
+              Card(
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                ElevatedButton(
-                  onPressed: newFolderName.trim().isEmpty
-                      ? null
-                      : () {
-                          // Add folder logic
-                          setState(() => newFolderName = '');
-                        },
-                  child: const Text('Add Folder'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                childAspectRatio: 1.5,
-                children: folders
-                    .map(
-                      (folder) => Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: folder['color'] as Color,
-                                    radius: 8,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  editingFolderId == folder['id']
-                                      ? Expanded(
-                                          child: TextField(
-                                            autofocus: true,
-                                            onSubmitted: (v) {
-                                              // Edit folder logic
-                                              setState(
-                                                () => editingFolderId = null,
-                                              );
-                                            },
-                                            decoration: const InputDecoration(
-                                              hintText: 'Folder name',
-                                            ),
-                                          ),
-                                        )
-                                      : Expanded(
-                                          child: Text(
-                                            folder['name']!,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () => setState(
-                                      () => editingFolderId = folder['id'],
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () {
-                                      // Delete folder logic
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const Spacer(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.vpn_key, size: 16),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        'Credentials: ${folder['credentialCount']}',
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.shield, size: 16),
-                                      const SizedBox(width: 4),
-                                      Text('TOTP: ${folder['totpCount']}'),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              OutlinedButton(
-                                onPressed: () {},
-                                child: const Text('View Contents'),
-                              ),
-                            ],
+                child: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.create_new_folder_outlined,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: TextField(
+                          controller: _controller,
+                          decoration: const InputDecoration(
+                            hintText: 'Enter folder name...',
+                            border: InputBorder.none,
                           ),
+                          onChanged: (v) => setState(() => _newFolderName = v),
+                          onSubmitted: (_) => _addFolder(),
                         ),
                       ),
-                    )
-                    .toList(),
+                      ElevatedButton.icon(
+                        onPressed: _newFolderName.trim().isEmpty
+                            ? null
+                            : _addFolder,
+                        icon: const Icon(Icons.add),
+                        label: const Text('Add Folder'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 24),
+              // Folders Grid/List
+              Expanded(
+                child: folders.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.folder_open,
+                              size: 64,
+                              color: Colors.grey[400],
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'No folders created',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Create your first folder to organize your credentials',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      )
+                    : GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: gridCount,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.5,
+                        ),
+                        itemCount: folders.length,
+                        itemBuilder: (context, i) {
+                          final folder = folders[i];
+                          final isEditing = _editingId == folder['id'];
+                          return AnimatedSize(
+                            duration: const Duration(milliseconds: 250),
+                            curve: Curves.easeInOut,
+                            child: Card(
+                              elevation: 3,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          width: 12,
+                                          height: 12,
+                                          decoration: BoxDecoration(
+                                            color: folder['color'],
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        isEditing
+                                            ? Expanded(
+                                                child: TextField(
+                                                  autofocus: true,
+                                                  initialValue: folder['name'],
+                                                  onSubmitted: (v) =>
+                                                      _editFolder(
+                                                        folder['id'],
+                                                        v,
+                                                      ),
+                                                  onEditingComplete: () =>
+                                                      setState(
+                                                        () => _editingId = null,
+                                                      ),
+                                                ),
+                                              )
+                                            : Expanded(
+                                                child: Text(
+                                                  folder['name'],
+                                                  style: Theme.of(
+                                                    context,
+                                                  ).textTheme.titleMedium,
+                                                ),
+                                              ),
+                                        IconButton(
+                                          icon: const Icon(Icons.edit),
+                                          tooltip: 'Rename',
+                                          onPressed: () => setState(() {
+                                            _editingId = folder['id'];
+                                          }),
+                                        ),
+                                        IconButton(
+                                          icon: const Icon(Icons.delete),
+                                          tooltip: 'Delete',
+                                          onPressed: () =>
+                                              _deleteFolder(folder['id']),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.vpn_key,
+                                          size: 18,
+                                          color: Colors.grey[600],
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '${folder['credentialCount']} Credentials',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
+                                        ),
+                                        const SizedBox(width: 16),
+                                        Icon(
+                                          Icons.shield,
+                                          size: 18,
+                                          color: Colors.grey[600],
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          '${folder['totpCount']} TOTP',
+                                          style: Theme.of(
+                                            context,
+                                          ).textTheme.bodySmall,
+                                        ),
+                                      ],
+                                    ),
+                                    const Spacer(),
+                                    SizedBox(
+                                      width: double.infinity,
+                                      child: OutlinedButton.icon(
+                                        icon: const Icon(Icons.folder_open),
+                                        label: const Text('View Contents'),
+                                        onPressed: () {
+                                          // TODO: Navigate to folder detail
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
