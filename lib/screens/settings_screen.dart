@@ -53,8 +53,13 @@ class SettingsScreen extends StatelessWidget {
             color: Colors.red[50],
             child: ListTile(
               leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('Delete Account', style: TextStyle(color: Colors.red)),
-              subtitle: const Text('Permanently delete your account and all data'),
+              title: const Text(
+                'Delete Account',
+                style: TextStyle(color: Colors.red),
+              ),
+              subtitle: const Text(
+                'Permanently delete your account and all data',
+              ),
               onTap: () {
                 // Confirm and delete account logic
               },

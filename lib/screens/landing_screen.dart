@@ -40,10 +40,7 @@ class LandingScreen extends StatelessWidget {
               child: const Text('Get Started Free'),
             ),
             const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: () {},
-              child: const Text('View Demo'),
-            ),
+            OutlinedButton(onPressed: () {}, child: const Text('View Demo')),
           ],
         ),
       ),

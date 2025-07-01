@@ -44,26 +44,38 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const Text('Welcome back', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Welcome back',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 16),
                   TextFormField(
                     decoration: const InputDecoration(labelText: 'Email'),
                     keyboardType: TextInputType.emailAddress,
                     onChanged: (v) => _email = v,
-                    validator: (v) => v != null && v.contains('@') ? null : 'Enter a valid email',
+                    validator: (v) => v != null && v.contains('@')
+                        ? null
+                        : 'Enter a valid email',
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     decoration: InputDecoration(
                       labelText: 'Password',
                       suffixIcon: IconButton(
-                        icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
-                        onPressed: () => setState(() => _showPassword = !_showPassword),
+                        icon: Icon(
+                          _showPassword
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () =>
+                            setState(() => _showPassword = !_showPassword),
                       ),
                     ),
                     obscureText: !_showPassword,
                     onChanged: (v) => _password = v,
-                    validator: (v) => v != null && v.length >= 6 ? null : 'Password too short',
+                    validator: (v) => v != null && v.length >= 6
+                        ? null
+                        : 'Password too short',
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(

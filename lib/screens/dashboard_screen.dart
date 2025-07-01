@@ -6,10 +6,30 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = [
-      {'title': 'Total Credentials', 'value': '24', 'icon': Icons.vpn_key, 'color': Colors.blue},
-      {'title': 'TOTP Codes', 'value': '8', 'icon': Icons.shield, 'color': Colors.green},
-      {'title': 'Recent Activity', 'value': '3', 'icon': Icons.access_time, 'color': Colors.orange},
-      {'title': 'Security Alerts', 'value': '1', 'icon': Icons.warning, 'color': Colors.red},
+      {
+        'title': 'Total Credentials',
+        'value': '24',
+        'icon': Icons.vpn_key,
+        'color': Colors.blue,
+      },
+      {
+        'title': 'TOTP Codes',
+        'value': '8',
+        'icon': Icons.shield,
+        'color': Colors.green,
+      },
+      {
+        'title': 'Recent Activity',
+        'value': '3',
+        'icon': Icons.access_time,
+        'color': Colors.orange,
+      },
+      {
+        'title': 'Security Alerts',
+        'value': '1',
+        'icon': Icons.warning,
+        'color': Colors.red,
+      },
     ];
 
     final recentItems = [
@@ -23,7 +43,10 @@ class DashboardScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Welcome back! Here\'s your security overview.', style: TextStyle(fontSize: 16)),
+          const Text(
+            'Welcome back! Here\'s your security overview.',
+            style: TextStyle(fontSize: 16),
+          ),
           const SizedBox(height: 16),
           // Stats Grid
           GridView.count(
@@ -31,13 +54,26 @@ class DashboardScreen extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             childAspectRatio: 2.5,
-            children: stats.map((stat) => Card(
-              child: ListTile(
-                leading: Icon(stat['icon'] as IconData, color: stat['color'] as Color),
-                title: Text(stat['title'] as String),
-                trailing: Text(stat['value'] as String, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              ),
-            )).toList(),
+            children: stats
+                .map(
+                  (stat) => Card(
+                    child: ListTile(
+                      leading: Icon(
+                        stat['icon'] as IconData,
+                        color: stat['color'] as Color,
+                      ),
+                      title: Text(stat['title'] as String),
+                      trailing: Text(
+                        stat['value'] as String,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
           ),
           const SizedBox(height: 24),
           // Quick Actions
@@ -47,7 +83,10 @@ class DashboardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Quick Actions', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Quick Actions',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 12),
                   Wrap(
                     spacing: 12,
@@ -81,13 +120,18 @@ class DashboardScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Recent Items', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Recent Items',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 12),
-                  ...recentItems.map((item) => ListTile(
-                    leading: const Icon(Icons.vpn_key),
-                    title: Text(item['name']!),
-                    subtitle: Text(item['username']!),
-                  )),
+                  ...recentItems.map(
+                    (item) => ListTile(
+                      leading: const Icon(Icons.vpn_key),
+                      title: Text(item['name']!),
+                      subtitle: Text(item['username']!),
+                    ),
+                  ),
                 ],
               ),
             ),

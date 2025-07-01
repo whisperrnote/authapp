@@ -21,10 +21,14 @@ class _NewCredentialScreenState extends State<NewCredentialScreen> {
   List<Map<String, String>> _customFields = [];
 
   void _generatePassword() {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
+    const charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#\$%^&*';
     final rand = Random.secure();
     setState(() {
-      _password = List.generate(16, (_) => charset[rand.nextInt(charset.length)]).join();
+      _password = List.generate(
+        16,
+        (_) => charset[rand.nextInt(charset.length)],
+      ).join();
     });
   }
 
@@ -54,7 +58,9 @@ class _NewCredentialScreenState extends State<NewCredentialScreen> {
                 onChanged: (v) => _url = v,
               ),
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Username/Email *'),
+                decoration: const InputDecoration(
+                  labelText: 'Username/Email *',
+                ),
                 onChanged: (v) => _username = v,
                 validator: (v) => v != null && v.isNotEmpty ? null : 'Required',
               ),
@@ -65,13 +71,19 @@ class _NewCredentialScreenState extends State<NewCredentialScreen> {
                       decoration: InputDecoration(
                         labelText: 'Password *',
                         suffixIcon: IconButton(
-                          icon: Icon(_showPassword ? Icons.visibility_off : Icons.visibility),
-                          onPressed: () => setState(() => _showPassword = !_showPassword),
+                          icon: Icon(
+                            _showPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () =>
+                              setState(() => _showPassword = !_showPassword),
                         ),
                       ),
                       obscureText: !_showPassword,
                       onChanged: (v) => _password = v,
-                      validator: (v) => v != null && v.isNotEmpty ? null : 'Required',
+                      validator: (v) =>
+                          v != null && v.isNotEmpty ? null : 'Required',
                       controller: TextEditingController(text: _password),
                     ),
                   ),
@@ -98,7 +110,10 @@ class _NewCredentialScreenState extends State<NewCredentialScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text('Custom Fields', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'Custom Fields',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: _addCustomField,
@@ -112,19 +127,26 @@ class _NewCredentialScreenState extends State<NewCredentialScreen> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        decoration: const InputDecoration(hintText: 'Field name'),
-                        onChanged: (v) => setState(() => _customFields[idx]['label'] = v),
+                        decoration: const InputDecoration(
+                          hintText: 'Field name',
+                        ),
+                        onChanged: (v) =>
+                            setState(() => _customFields[idx]['label'] = v),
                       ),
                     ),
                     Expanded(
                       child: TextFormField(
-                        decoration: const InputDecoration(hintText: 'Field value'),
-                        onChanged: (v) => setState(() => _customFields[idx]['value'] = v),
+                        decoration: const InputDecoration(
+                          hintText: 'Field value',
+                        ),
+                        onChanged: (v) =>
+                            setState(() => _customFields[idx]['value'] = v),
                       ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.close),
-                      onPressed: () => setState(() => _customFields.removeAt(idx)),
+                      onPressed: () =>
+                          setState(() => _customFields.removeAt(idx)),
                     ),
                   ],
                 );

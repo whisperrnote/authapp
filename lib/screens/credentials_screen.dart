@@ -40,10 +40,15 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final filtered = credentials.where((cred) =>
-      cred['name']!.toLowerCase().contains(searchTerm.toLowerCase()) ||
-      cred['username']!.toLowerCase().contains(searchTerm.toLowerCase())
-    ).toList();
+    final filtered = credentials
+        .where(
+          (cred) =>
+              cred['name']!.toLowerCase().contains(searchTerm.toLowerCase()) ||
+              cred['username']!.toLowerCase().contains(
+                searchTerm.toLowerCase(),
+              ),
+        )
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -74,39 +79,47 @@ class _CredentialsScreenState extends State<CredentialsScreen> {
           ),
           Expanded(
             child: filtered.isEmpty
-              ? const Center(child: Text('No credentials found'))
-              : gridView
+                ? const Center(child: Text('No credentials found'))
+                : gridView
                 ? GridView.count(
                     crossAxisCount: 2,
                     childAspectRatio: 2.5,
-                    children: filtered.map((cred) => Card(
-                      child: ListTile(
-                        title: Text(cred['name']!),
-                        subtitle: Text(cred['username']!),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.copy),
-                          onPressed: () {
-                            // Copy username/password logic
-                          },
-                        ),
-                        onTap: () {},
-                      ),
-                    )).toList(),
+                    children: filtered
+                        .map(
+                          (cred) => Card(
+                            child: ListTile(
+                              title: Text(cred['name']!),
+                              subtitle: Text(cred['username']!),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.copy),
+                                onPressed: () {
+                                  // Copy username/password logic
+                                },
+                              ),
+                              onTap: () {},
+                            ),
+                          ),
+                        )
+                        .toList(),
                   )
                 : ListView(
-                    children: filtered.map((cred) => Card(
-                      child: ListTile(
-                        title: Text(cred['name']!),
-                        subtitle: Text(cred['username']!),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.copy),
-                          onPressed: () {
-                            // Copy username/password logic
-                          },
-                        ),
-                        onTap: () {},
-                      ),
-                    )).toList(),
+                    children: filtered
+                        .map(
+                          (cred) => Card(
+                            child: ListTile(
+                              title: Text(cred['name']!),
+                              subtitle: Text(cred['username']!),
+                              trailing: IconButton(
+                                icon: const Icon(Icons.copy),
+                                onPressed: () {
+                                  // Copy username/password logic
+                                },
+                              ),
+                              onTap: () {},
+                            ),
+                          ),
+                        )
+                        .toList(),
                   ),
           ),
         ],
