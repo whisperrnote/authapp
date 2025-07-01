@@ -11,7 +11,7 @@ class _CredentialsScreenState extends State<CredentialsScreen>
     with SingleTickerProviderStateMixin {
   String _search = '';
   String _viewMode = 'list'; // or 'grid'
-  Set<String> _revealed = {};
+  final Set<String> _revealed = {};
   late AnimationController _controller;
   late Animation<double> _fadeAnim;
 

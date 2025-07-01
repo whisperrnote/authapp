@@ -19,7 +19,7 @@ class _NewCredentialScreenState extends State<NewCredentialScreen>
   String _notes = '';
   String _folder = '';
   String _tags = '';
-  List<Map<String, String>> _customFields = [];
+  final List<Map<String, String>> _customFields = [];
   late AnimationController _controller;
   late Animation<double> _fadeAnim;
 
