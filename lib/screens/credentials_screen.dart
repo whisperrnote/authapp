@@ -70,8 +70,12 @@ class _CredentialsScreenState extends State<CredentialsScreen>
     return credentials
         .where(
           (cred) =>
-              cred['name'].toLowerCase().contains(_search.toLowerCase()) ||
-              cred['username'].toLowerCase().contains(_search.toLowerCase()),
+              ((cred['name'] as String?)?.toLowerCase() ?? '').contains(
+                _search.toLowerCase(),
+              ) ||
+              ((cred['username'] as String?)?.toLowerCase() ?? '').contains(
+                _search.toLowerCase(),
+              ),
         )
         .toList();
   }

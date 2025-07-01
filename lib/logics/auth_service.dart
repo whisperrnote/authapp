@@ -26,4 +26,12 @@ class AuthService extends ChangeNotifier {
     _isAuthenticated = false;
     notifyListeners();
   }
+
+  /// Simulate registration (replace with real logic)
+  Future<void> register(String email, String password, String name) async {
+    // TODO: Implement real registration logic (e.g., call backend)
+    await Future.delayed(const Duration(milliseconds: 300));
+    _isAuthenticated = true;
+    notifyListeners();
+  }
 }

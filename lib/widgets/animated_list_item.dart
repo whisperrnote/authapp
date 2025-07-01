@@ -15,7 +15,13 @@ class AnimatedListItem extends StatelessWidget {
     return SizeTransition(
       sizeFactor: animation,
       axisAlignment: 0.0,
-      child: FadeTransition(opacity: animation, child: child),
+      child: SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(0, 0.1), // Slide up from bottom
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOut)),
+        child: FadeTransition(opacity: animation, child: child),
+      ),
     );
   }
 }

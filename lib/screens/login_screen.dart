@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen>
       _error = null;
     });
     try {
-      await AuthService.instance.login(_email, _password);
+      AuthService.instance.login(); // Remove arguments, as login() takes none
       if (mounted) {
         Navigator.of(context).pushReplacementNamed('/dashboard');
       }

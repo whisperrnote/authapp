@@ -221,7 +221,10 @@ class _FoldersScreenState extends State<FoldersScreen>
                                             ? Expanded(
                                                 child: TextField(
                                                   autofocus: true,
-                                                  initialValue: folder['name'],
+                                                  controller:
+                                                      TextEditingController(
+                                                        text: folder['name'],
+                                                      ),
                                                   onSubmitted: (v) =>
                                                       _editFolder(
                                                         folder['id'],
