@@ -1,319 +1,683 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class DashboardScreen extends StatefulWidget {
+class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState();
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth > 900) {
+          return const _DesktopDashboard();
+        } else {
+          return const _MobileDashboard();
+        }
+      },
+    );
+  }
 }
 
-class _DashboardScreenState extends State<DashboardScreen>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _fadeAnim;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 300),
-      vsync: this,
-    );
-    _fadeAnim = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
-    _controller.forward();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+// ----------------- Desktop -----------------
+class _DesktopDashboard extends StatelessWidget {
+  const _DesktopDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final stats = [
-      {
-        'title': 'Total Credentials',
-        'value': '24',
-        'icon': Icons.vpn_key,
-        'color': const Color(0xFF8D6748),
-      },
-      {
-        'title': 'TOTP Codes',
-        'value': '8',
-        'icon': Icons.shield,
-        'color': const Color(0xFFBFAE99),
-      },
-      {
-        'title': 'Recent Activity',
-        'value': '3',
-        'icon': Icons.access_time,
-        'color': const Color(0xFF8D6748),
-      },
-      {
-        'title': 'Security Alerts',
-        'value': '1',
-        'icon': Icons.warning,
-        'color': Colors.red,
-      },
-    ];
+    return Scaffold(
+      body: Row(
+        children: [
+          const _DesktopSidebar(),
+          Expanded(
+            child: Column(
+              children: [
+                const _DesktopAppBar(),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
+                    ),
+                    child: _DashboardContent(isDesktop: true),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-    final recentItems = [
-      {
-        'name': 'GitHub',
-        'username': 'john@example.com',
-        'lastUsed': '2 hours ago',
-      },
-      {
-        'name': 'Gmail',
-        'username': 'john.doe@gmail.com',
-        'lastUsed': '5 hours ago',
-      },
-      {'name': 'AWS Console', 'username': 'johndoe', 'lastUsed': '1 day ago'},
-    ];
+class _DesktopSidebar extends StatelessWidget {
+  const _DesktopSidebar({super.key});
 
-    return FadeTransition(
-      opacity: _fadeAnim,
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Dashboard'),
-          backgroundColor: Colors.white.withOpacity(0.7),
-          elevation: 0,
-          centerTitle: true,
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      _SidebarItem(icon: Icons.dashboard_rounded, label: 'Dashboard'),
+      _SidebarItem(icon: Icons.vpn_key_rounded, label: 'Credentials'),
+      _SidebarItem(icon: Icons.add_circle_rounded, label: 'New', isBig: true),
+      _SidebarItem(icon: Icons.shield_rounded, label: 'TOTP'),
+      _SidebarItem(icon: Icons.settings_rounded, label: 'Settings'),
+    ];
+    return Container(
+      width: 90,
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.7),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.brown.withOpacity(0.18),
+            blurRadius: 24,
+            offset: const Offset(4, 0),
+          ),
+        ],
+        borderRadius: const BorderRadius.only(
+          topRight: Radius.circular(32),
+          bottomRight: Radius.circular(32),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Welcome back! Here's your security overview.",
-                style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: items
+            .map(
+              (item) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 18),
+                child: item,
               ),
-              const SizedBox(height: 24),
-              // Stats Grid
-              GridView.count(
-                crossAxisCount: MediaQuery.of(context).size.width > 900
-                    ? 4
-                    : MediaQuery.of(context).size.width > 600
-                    ? 2
-                    : 1,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                children: stats
-                    .map(
-                      (stat) => Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color(0xFF8D6748).withOpacity(0.08),
-                              blurRadius: 24,
-                              offset: const Offset(0, 4),
-                            ),
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.04),
-                              blurRadius: 6,
-                              offset: const Offset(0, 1.5),
-                            ),
-                          ],
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.3),
-                          ),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    stat['title'] as String,
-                                    style: Theme.of(context).textTheme.bodySmall
-                                        ?.copyWith(color: Colors.grey),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    stat['value'] as String,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: stat['color'] as Color,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                              CircleAvatar(
-                                backgroundColor: (stat['color'] as Color)
-                                    .withOpacity(0.12),
-                                child: Icon(
-                                  stat['icon'] as IconData,
-                                  size: 28,
-                                  color: stat['color'] as Color,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-              const SizedBox(height: 32),
-              // Quick Actions
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF8D6748).withOpacity(0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
+            )
+            .toList(),
+      ),
+    );
+  }
+}
+
+class _DesktopAppBar extends StatelessWidget {
+  const _DesktopAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 80,
+      padding: const EdgeInsets.symmetric(horizontal: 32),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.4),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(32),
+          bottomRight: Radius.circular(32),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.brown.withOpacity(0.13),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          const Text(
+            'WhisperrAuth',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 32,
+              letterSpacing: 2,
+              color: Color(0xFF8D6748),
+              shadows: [
+                Shadow(
+                  color: Colors.black26,
+                  blurRadius: 8,
+                  offset: Offset(2, 2),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Quick Actions',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 16),
-                      Wrap(
-                        spacing: 16,
-                        runSpacing: 8,
-                        children: [
-                          ElevatedButton.icon(
-                            icon: const Icon(Icons.add),
-                            label: const Text('Add Credential'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF8D6748),
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 14,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 8,
-                            ),
-                            onPressed: () {
-                              Navigator.of(
-                                context,
-                              ).pushNamed('/credentials/new');
-                            },
-                          ),
-                          OutlinedButton.icon(
-                            icon: const Icon(Icons.download),
-                            label: const Text('Backup Vault'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF8D6748),
-                              side: const BorderSide(color: Color(0xFF8D6748)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {},
-                          ),
-                          OutlinedButton.icon(
-                            icon: const Icon(Icons.list_alt),
-                            label: const Text('View Logs'),
-                            style: OutlinedButton.styleFrom(
-                              foregroundColor: const Color(0xFF8D6748),
-                              side: const BorderSide(color: Color(0xFF8D6748)),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ],
+              ],
+            ),
+          ),
+          const SizedBox(width: 32),
+          const Expanded(child: _SearchBar()),
+        ],
+      ),
+    );
+  }
+}
+
+// ----------------- Mobile -----------------
+class _MobileDashboard extends StatefulWidget {
+  const _MobileDashboard({super.key});
+
+  @override
+  State<_MobileDashboard> createState() => _MobileDashboardState();
+}
+
+class _MobileDashboardState extends State<_MobileDashboard> {
+  int _selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const _MobileAppBar(),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: _DashboardContent(isDesktop: false),
+      ),
+      bottomNavigationBar: _MobileBottomBar(
+        selectedIndex: _selectedIndex,
+        onTap: (i) => setState(() => _selectedIndex = i),
+      ),
+    );
+  }
+}
+
+class _MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const _MobileAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: const Text(
+        'WhisperrAuth',
+        style: TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 26,
+          letterSpacing: 2,
+          color: Color(0xFF8D6748),
+          shadows: [
+            Shadow(color: Colors.black26, blurRadius: 8, offset: Offset(2, 2)),
+          ],
+        ),
+      ),
+      backgroundColor: Colors.white.withOpacity(0.7),
+      elevation: 8,
+      shadowColor: Colors.brown.withOpacity(0.13),
+      centerTitle: true,
+      toolbarHeight: 70,
+      bottom: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 12, left: 8, right: 8),
+          child: const _SearchBar(),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(110);
+}
+
+class _MobileBottomBar extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onTap;
+  const _MobileBottomBar({required this.selectedIndex, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    final items = [
+      _BottomBarItem(icon: Icons.dashboard_rounded, label: 'Dashboard'),
+      _BottomBarItem(icon: Icons.vpn_key_rounded, label: 'Credentials'),
+      _BottomBarItem(icon: Icons.add_circle_rounded, label: 'New', isBig: true),
+      _BottomBarItem(icon: Icons.shield_rounded, label: 'TOTP'),
+      _BottomBarItem(icon: Icons.settings_rounded, label: 'Settings'),
+    ];
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.7),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.brown.withOpacity(0.13),
+            blurRadius: 24,
+            offset: const Offset(0, -8),
+          ),
+        ],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(32),
+          topRight: Radius.circular(32),
+        ),
+      ),
+      child: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            items.length,
+            (i) => GestureDetector(
+              onTap: () => onTap(i),
+              child: items[i].copyWith(selected: i == selectedIndex),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ----------------- Shared UI -----------------
+class _SidebarItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isBig;
+  const _SidebarItem({
+    required this.icon,
+    required this.label,
+    this.isBig = false,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Material(
+          elevation: isBig ? 12 : 4,
+          shape: const CircleBorder(),
+          color: Colors.transparent,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: isBig
+                    ? [const Color(0xFFBFAE99), const Color(0xFF8D6748)]
+                    : [const Color(0xFFF5EFE6), const Color(0xFFBFAE99)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.brown.withOpacity(0.18),
+                  blurRadius: isBig ? 18 : 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            padding: EdgeInsets.all(isBig ? 16 : 10),
+            child: Icon(
+              icon,
+              size: isBig ? 38 : 26,
+              color: const Color(0xFF8D6748),
+              shadows: [
+                Shadow(
+                  color: Colors.black26,
+                  blurRadius: 8,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: isBig ? 15 : 13,
+            fontWeight: isBig ? FontWeight.bold : FontWeight.w500,
+            color: const Color(0xFF8D6748),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _BottomBarItem extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isBig;
+  final bool selected;
+  const _BottomBarItem({
+    required this.icon,
+    required this.label,
+    this.isBig = false,
+    this.selected = false,
+  });
+
+  Widget copyWith({bool? selected}) => _BottomBarItem(
+    icon: icon,
+    label: label,
+    isBig: isBig,
+    selected: selected ?? this.selected,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 180),
+      padding: EdgeInsets.symmetric(vertical: isBig ? 0 : 8, horizontal: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Material(
+            elevation: isBig ? 10 : 2,
+            shape: const CircleBorder(),
+            color: Colors.transparent,
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: isBig
+                      ? [const Color(0xFFBFAE99), const Color(0xFF8D6748)]
+                      : [const Color(0xFFF5EFE6), const Color(0xFFBFAE99)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.brown.withOpacity(0.18),
+                    blurRadius: isBig ? 18 : 8,
+                    offset: const Offset(0, 4),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 32),
-              // Recent Items
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF8D6748).withOpacity(0.08),
-                      blurRadius: 24,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                  border: Border.all(color: Colors.white.withOpacity(0.3)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Recent Items',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 16),
-                      ...recentItems.map(
-                        (item) => Container(
-                          margin: const EdgeInsets.only(bottom: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white.withOpacity(0.5),
-                          ),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundColor: const Color(
-                                0xFF8D6748,
-                              ).withOpacity(0.12),
-                              child: const Icon(
-                                Icons.vpn_key,
-                                color: Color(0xFF8D6748),
-                              ),
-                            ),
-                            title: Text(
-                              item['name']!,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            subtitle: Text(
-                              item['username']!,
-                              style: const TextStyle(
-                                fontFamily: 'monospace',
-                                color: Color(0xFFBFAE99),
-                              ),
-                            ),
-                            trailing: Text(
-                              item['lastUsed']!,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(color: Colors.grey),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+              padding: EdgeInsets.all(isBig ? 16 : 10),
+              child: Icon(
+                icon,
+                size: isBig ? 38 : 26,
+                color: selected
+                    ? const Color(0xFF8D6748)
+                    : const Color(0xFFBFAE99),
+                shadows: [
+                  Shadow(
+                    color: Colors.black26,
+                    blurRadius: 8,
+                    offset: Offset(2, 2),
                   ),
-                ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: isBig ? 15 : 13,
+              fontWeight: isBig ? FontWeight.bold : FontWeight.w500,
+              color: selected
+                  ? const Color(0xFF8D6748)
+                  : const Color(0xFFBFAE99),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(22),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+        child: Container(
+          height: 44,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.45),
+            borderRadius: BorderRadius.circular(22),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.brown.withOpacity(0.10),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
               ),
             ],
+            border: Border.all(
+              color: const Color(0xFFBFAE99).withOpacity(0.4),
+              width: 1.2,
+            ),
+          ),
+          child: Row(
+            children: [
+              const SizedBox(width: 16),
+              const Icon(
+                Icons.search_rounded,
+                color: Color(0xFF8D6748),
+                size: 22,
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                    hintText: 'Search passwords, usernames...',
+                    border: InputBorder.none,
+                    isDense: true,
+                  ),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+              const SizedBox(width: 16),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ----------------- Main Content -----------------
+class _DashboardContent extends StatelessWidget {
+  final bool isDesktop;
+  const _DashboardContent({required this.isDesktop, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        // Filter categories
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 18),
+          child: Row(
+            children: [
+              _FilterChip(label: 'Folder', icon: Icons.folder_rounded),
+              const SizedBox(width: 12),
+              _FilterChip(
+                label: 'Collection',
+                icon: Icons.collections_bookmark_rounded,
+              ),
+              const SizedBox(width: 12),
+              _FilterChip(label: 'Kind', icon: Icons.category_rounded),
+            ],
+          ),
+        ),
+        // Recent Section
+        _SectionTitle(title: 'Recent'),
+        const SizedBox(height: 8),
+        ...List.generate(
+          3,
+          (i) => _PasswordItem(
+            username: 'user${i + 1}@mail.com',
+            hash: 'a1b2c3d4e5f6g7h8i9j0',
+            isDesktop: isDesktop,
+          ),
+        ),
+        const SizedBox(height: 24),
+        _SectionTitle(title: 'All Items'),
+        const SizedBox(height: 8),
+        ...List.generate(
+          10,
+          (i) => _PasswordItem(
+            username: 'demo${i + 1}@site.com',
+            hash: 'z9y8x7w6v5u4t3s2r1q${i + 1}',
+            isDesktop: isDesktop,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _FilterChip extends StatelessWidget {
+  final String label;
+  final IconData icon;
+  const _FilterChip({required this.label, required this.icon});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      elevation: 4,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.6),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.brown.withOpacity(0.10),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: const Color(0xFFBFAE99).withOpacity(0.4),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, color: const Color(0xFF8D6748), size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Color(0xFF8D6748),
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  final String title;
+  const _SectionTitle({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontSize: 22,
+        fontWeight: FontWeight.bold,
+        color: Color(0xFF8D6748),
+        shadows: [
+          Shadow(color: Colors.black12, blurRadius: 8, offset: Offset(2, 2)),
+        ],
+      ),
+    );
+  }
+}
+
+class _PasswordItem extends StatelessWidget {
+  final String username;
+  final String hash;
+  final bool isDesktop;
+  const _PasswordItem({
+    required this.username,
+    required this.hash,
+    required this.isDesktop,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 7),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(18),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.55),
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.brown.withOpacity(0.10),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+              border: Border.all(
+                color: const Color(0xFFBFAE99).withOpacity(0.3),
+                width: 1,
+              ),
+            ),
+            child: ListTile(
+              leading: CircleAvatar(
+                backgroundColor: const Color(0xFFBFAE99).withOpacity(0.7),
+                child: Icon(
+                  Icons.person_rounded,
+                  color: const Color(0xFF8D6748),
+                ),
+              ),
+              title: Text(
+                username,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xFF8D6748),
+                ),
+              ),
+              subtitle: Text(
+                hash,
+                style: const TextStyle(
+                  fontFamily: 'monospace',
+                  color: Color(0xFFBFAE99),
+                  fontSize: 13,
+                ),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _CopyIconButton(),
+                  if (isDesktop) const SizedBox(width: 8),
+                  if (isDesktop) _CopyIconButton(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CopyIconButton extends StatelessWidget {
+  const _CopyIconButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      shape: const CircleBorder(),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(22),
+        onTap: () {
+          // TODO: Implement copy logic
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('Copied!')));
+        },
+        child: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white.withOpacity(0.7),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.brown.withOpacity(0.10),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.copy_rounded,
+            color: Color(0xFF8D6748),
+            size: 22,
           ),
         ),
       ),
