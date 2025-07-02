@@ -4,7 +4,11 @@ class Sidebar extends StatelessWidget {
   final String selectedRoute;
   final Function(String) onNavigate;
 
-  const Sidebar({required this.selectedRoute, required this.onNavigate, super.key});
+  const Sidebar({
+    required this.selectedRoute,
+    required this.onNavigate,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,33 +21,99 @@ class Sidebar extends StatelessWidget {
     ];
 
     return Drawer(
-      child: Column(
-        children: [
-          DrawerHeader(
-            child: Row(
-              children: [
-                Icon(Icons.shield, size: 32, color: Theme.of(context).primaryColor),
-                const SizedBox(width: 12),
-                Text('Whisperrauth', style: Theme.of(context).textTheme.titleLarge),
-              ],
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white.withOpacity(0.7),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(24),
+            bottomRight: Radius.circular(24),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFF8D6748).withOpacity(0.08),
+              blurRadius: 24,
+              offset: const Offset(0, 4),
             ),
-          ),
-          ...navItems.map((item) => ListTile(
-                leading: Icon(item['icon'] as IconData),
-                title: Text(item['label'] as String),
+          ],
+          border: Border.all(color: Colors.white.withOpacity(0.3)),
+        ),
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF8D6748),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.all(8),
+                    child: const Icon(
+                      Icons.shield,
+                      size: 32,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Whisperrauth',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ...navItems.map(
+              (item) => ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: selectedRoute == item['route']
+                      ? const Color(0xFF8D6748).withOpacity(0.18)
+                      : const Color(0xFFBFAE99).withOpacity(0.12),
+                  child: Icon(
+                    item['icon'] as IconData,
+                    color: const Color(0xFF8D6748),
+                  ),
+                ),
+                title: Text(
+                  item['label'] as String,
+                  style: TextStyle(
+                    fontWeight: selectedRoute == item['route']
+                        ? FontWeight.bold
+                        : FontWeight.normal,
+                    color: selectedRoute == item['route']
+                        ? const Color(0xFF8D6748)
+                        : Colors.black87,
+                  ),
+                ),
                 selected: selectedRoute == item['route'],
+                selectedTileColor: const Color(0xFFBFAE99).withOpacity(0.18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 onTap: () => onNavigate(item['route'] as String),
-              )),
-          const Spacer(),
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('Logout'),
-            onTap: () {
-              // TODO: Implement logout logic
-              Navigator.of(context).pushReplacementNamed('/login');
-            },
-          ),
-        ],
+              ),
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () {
+                  // TODO: Implement logout logic
+                  Navigator.of(context).pushReplacementNamed('/login');
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

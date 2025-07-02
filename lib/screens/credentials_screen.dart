@@ -99,22 +99,44 @@ class _CredentialsScreenState extends State<CredentialsScreen>
 
   Widget _buildCredentialCard(Map<String, dynamic> cred) {
     final isRevealed = _revealed.contains(cred['id']);
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.7),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF8D6748).withOpacity(0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 4),
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 6,
+            offset: const Offset(0, 1.5),
+          ),
+        ],
+        border: Border.all(color: Colors.white.withOpacity(0.3)),
+        // Glassmorphism effect
+        // (Flutter web: use BackdropFilter for real blur, but for mobile, this is enough)
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                Icon(cred['favicon'], size: 32),
+                CircleAvatar(
+                  backgroundColor: const Color(0xFFBFAE99).withOpacity(0.18),
+                  child: Icon(cred['favicon'], color: const Color(0xFF8D6748)),
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
                     cred['name'],
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 IconButton(
@@ -136,7 +158,9 @@ class _CredentialsScreenState extends State<CredentialsScreen>
             const SizedBox(height: 8),
             Text(
               isRevealed ? cred['username'] : '••••••••••••••',
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             Row(
               children: [
@@ -155,9 +179,9 @@ class _CredentialsScreenState extends State<CredentialsScreen>
                 const Spacer(),
                 Text(
                   cred['folder'],
-                  style: Theme.of(
-                    context,
-                  ).textTheme.labelSmall?.copyWith(color: Colors.grey),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: const Color(0xFFBFAE99),
+                  ),
                 ),
                 const SizedBox(width: 8),
                 ...cred['tags']
@@ -169,15 +193,13 @@ class _CredentialsScreenState extends State<CredentialsScreen>
                           vertical: 2,
                         ),
                         decoration: BoxDecoration(
-                          color: Theme.of(
-                            context,
-                          ).colorScheme.primary.withOpacity(0.1),
+                          color: const Color(0xFF8D6748).withOpacity(0.10),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
                           tag,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                          style: const TextStyle(
+                            color: Color(0xFF8D6748),
                             fontSize: 12,
                           ),
                         ),
@@ -194,7 +216,10 @@ class _CredentialsScreenState extends State<CredentialsScreen>
                     Expanded(
                       child: SelectableText(
                         cred['password'],
-                        style: const TextStyle(fontFamily: 'monospace'),
+                        style: const TextStyle(
+                          fontFamily: 'monospace',
+                          color: Color(0xFF8D6748),
+                        ),
                       ),
                     ),
                     IconButton(
@@ -219,37 +244,37 @@ class _CredentialsScreenState extends State<CredentialsScreen>
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Credentials'),
-          actions: [
-            IconButton(
-              icon: Icon(isGrid ? Icons.list : Icons.grid_view),
-              tooltip: isGrid ? 'List view' : 'Grid view',
-              onPressed: () {
-                setState(() {
-                  _viewMode = isGrid ? 'list' : 'grid';
-                });
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              tooltip: 'Add Credential',
-              onPressed: () {
-                Navigator.of(context).pushNamed('/credentials/new');
-              },
-            ),
-          ],
+          backgroundColor: Colors.white.withOpacity(0.7),
+          elevation: 0,
+          centerTitle: true,
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
-              // Search bar
-              TextField(
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search credentials...',
-                  border: OutlineInputBorder(),
+              // Glassmorphic Search bar
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.06),
+                      blurRadius: 12,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
-                onChanged: (v) => setState(() => _search = v),
+                child: TextField(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Search credentials...',
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  onChanged: (v) => setState(() => _search = v),
+                ),
               ),
               const SizedBox(height: 16),
               // List/Grid
@@ -284,6 +309,16 @@ class _CredentialsScreenState extends State<CredentialsScreen>
             ],
           ),
         ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.of(context).pushNamed('/credentials/new');
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('New'),
+          backgroundColor: const Color(0xFF8D6748),
+          elevation: 8,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }
