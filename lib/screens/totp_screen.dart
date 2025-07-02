@@ -56,7 +56,9 @@ class TotpScreen extends StatelessWidget {
                   ),
                   child: ListTile(
                     leading: CircleAvatar(
-                      backgroundColor: const Color(0xFF8D6748).withOpacity(0.18),
+                      backgroundColor: const Color(
+                        0xFF8D6748,
+                      ).withOpacity(0.18),
                       child: const Icon(Icons.shield, color: Color(0xFF8D6748)),
                     ),
                     title: Text(
@@ -77,12 +79,18 @@ class TotpScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.copy, color: Color(0xFF8D6748)),
+                          icon: const Icon(
+                            Icons.copy,
+                            color: Color(0xFF8D6748),
+                          ),
                           tooltip: 'Copy',
                           onPressed: () {},
                         ),
                         IconButton(
-                          icon: const Icon(Icons.edit, color: Color(0xFF8D6748)),
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Color(0xFF8D6748),
+                          ),
                           tooltip: 'Edit',
                           onPressed: () {},
                         ),
