@@ -32,8 +32,6 @@ class WhisperrAuthApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/dashboard': (context) => AuthGuard(child: const DashboardScreen()),
-        '/credentials': (context) =>
-            AuthGuard(child: const CredentialsScreen()),
         '/credentials/new': (context) =>
             AuthGuard(child: const NewCredentialScreen()),
         '/sharing': (context) => AuthGuard(child: const SharingScreen()),

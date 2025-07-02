@@ -27,7 +27,7 @@ class TotpScreen extends StatelessWidget {
         backgroundColor: Colors.white.withOpacity(0.7),
         elevation: 0,
         centerTitle: true,
-        leading: Navigator.of(context).canPop()
+        leading: ModalRoute.of(context)?.canPop == true
             ? IconButton(
                 icon: const Icon(Icons.arrow_back, color: Color(0xFF8D6748)),
                 onPressed: () => Navigator.of(context).pop(),
