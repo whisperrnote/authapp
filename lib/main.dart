@@ -25,9 +25,8 @@ class WhisperrAuthApp extends StatelessWidget {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: ThemeMode.system,
-      initialRoute: '/',
+      initialRoute: '/login',
       routes: {
-        '/': (context) => const LandingScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/dashboard': (context) => AuthGuard(child: const DashboardScreen()),
