@@ -78,28 +78,45 @@ class _RegisterScreenState extends State<RegisterScreen>
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 400),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(24),
+                  padding: const EdgeInsets.all(28),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.shield, size: 48, color: theme.primaryColor),
+                        Icon(
+                          Icons.shield,
+                          size: 48,
+                          color: const Color(0xFF8D6748),
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           'Create account',
-                          style: theme.textTheme.headlineSmall,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF8D6748),
+                          ),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           'Start securing your passwords today',
-                          style: theme.textTheme.bodyMedium,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF8D6748).withOpacity(0.7),
+                          ),
                         ),
                         const SizedBox(height: 24),
                         TextFormField(
@@ -179,6 +196,14 @@ class _RegisterScreenState extends State<RegisterScreen>
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF8D6748),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 8,
+                            ),
                             onPressed: _loading
                                 ? null
                                 : () {
@@ -202,7 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Already have an account?"),
+                            const Text("Already have an account?"),
                             TextButton(
                               onPressed: () => Navigator.of(
                                 context,

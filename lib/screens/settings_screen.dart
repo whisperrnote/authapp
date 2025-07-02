@@ -105,17 +105,30 @@ class _SettingsScreenState extends State<SettingsScreen>
     return FadeTransition(
       opacity: _fadeAnim,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Settings')),
+        appBar: AppBar(
+          title: const Text('Settings'),
+          backgroundColor: Colors.white.withOpacity(0.7),
+          elevation: 0,
+          centerTitle: true,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Profile
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -124,7 +137,13 @@ class _SettingsScreenState extends State<SettingsScreen>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Profile', style: theme.textTheme.titleMedium),
+                        Text(
+                          'Profile',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF8D6748),
+                          ),
+                        ),
                         const SizedBox(height: 16),
                         TextFormField(
                           initialValue: _name,
@@ -149,6 +168,14 @@ class _SettingsScreenState extends State<SettingsScreen>
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF8D6748),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 8,
+                            ),
                             onPressed: _loading ? null : _saveProfile,
                             child: _loading
                                 ? const SizedBox(
@@ -168,34 +195,80 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 24),
               // Security
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Security', style: theme.textTheme.titleMedium),
+                      Text(
+                        'Security',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF8D6748),
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8D6748),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 8,
+                        ),
                         onPressed: _changePassword,
                         child: const Text('Change Password'),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8D6748),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 8,
+                        ),
                         onPressed: _setup2FA,
                         child: const Text('Setup Two-Factor Authentication'),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8D6748),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 8,
+                        ),
                         onPressed: _manageSessions,
                         child: const Text('Manage Active Sessions'),
                       ),
                       const SizedBox(height: 12),
                       ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8D6748),
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 8,
+                        ),
                         onPressed: _viewSecurityLog,
                         child: const Text('View Security Log'),
                       ),
@@ -205,22 +278,45 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 24),
               // Appearance
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Appearance', style: theme.textTheme.titleMedium),
+                      Text(
+                        'Appearance',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF8D6748),
+                        ),
+                      ),
                       const SizedBox(height: 16),
                       Row(
                         children: [
                           Expanded(
                             child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF8D6748),
+                                side: const BorderSide(
+                                  color: Color(0xFF8D6748),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () {
                                 // TODO: Set light theme
                               },
@@ -230,6 +326,15 @@ class _SettingsScreenState extends State<SettingsScreen>
                           const SizedBox(width: 8),
                           Expanded(
                             child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF8D6748),
+                                side: const BorderSide(
+                                  color: Color(0xFF8D6748),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () {
                                 // TODO: Set dark theme
                               },
@@ -239,6 +344,15 @@ class _SettingsScreenState extends State<SettingsScreen>
                           const SizedBox(width: 8),
                           Expanded(
                             child: OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: const Color(0xFF8D6748),
+                                side: const BorderSide(
+                                  color: Color(0xFF8D6748),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () {
                                 // TODO: Set system theme
                               },
@@ -253,10 +367,18 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 24),
               // Data Management
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -265,16 +387,33 @@ class _SettingsScreenState extends State<SettingsScreen>
                     children: [
                       Text(
                         'Data Management',
-                        style: theme.textTheme.titleMedium,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF8D6748),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF8D6748),
+                          side: const BorderSide(color: Color(0xFF8D6748)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         onPressed: _exportData,
                         icon: const Icon(Icons.download),
                         label: const Text('Export All Data'),
                       ),
                       const SizedBox(height: 12),
                       OutlinedButton.icon(
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF8D6748),
+                          side: const BorderSide(color: Color(0xFF8D6748)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
                         onPressed: _importData,
                         icon: const Icon(Icons.upload),
                         label: const Text('Import Data'),
@@ -285,11 +424,18 @@ class _SettingsScreenState extends State<SettingsScreen>
               ),
               const SizedBox(height: 24),
               // Danger Zone
-              Card(
-                color: Colors.red[50],
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.red[50]?.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.red.withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.red.withOpacity(0.15)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -300,6 +446,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                         'Danger Zone',
                         style: theme.textTheme.titleMedium?.copyWith(
                           color: Colors.red,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 16),
@@ -311,6 +458,11 @@ class _SettingsScreenState extends State<SettingsScreen>
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 8,
                         ),
                         onPressed: _deleteAccount,
                         child: const Text('Delete Account'),
