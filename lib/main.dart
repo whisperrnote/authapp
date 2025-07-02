@@ -35,7 +35,6 @@ class WhisperrAuthApp extends StatelessWidget {
         '/credentials/new': (context) =>
             AuthGuard(child: const NewCredentialScreen()),
         '/sharing': (context) => AuthGuard(child: const SharingScreen()),
-        '/folders': (context) => AuthGuard(child: const FoldersScreen()),
         '/totp': (context) => AuthGuard(child: const TotpScreen()),
         '/settings': (context) => AuthGuard(child: const SettingsScreen()),
         // Add more routes as needed
