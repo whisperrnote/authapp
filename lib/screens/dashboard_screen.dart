@@ -18,6 +18,7 @@ class DashboardScreen extends StatelessWidget {
       builder: (context, constraints) {
         if (constraints.maxWidth > 900) {
           return Scaffold(
+            backgroundColor: const Color(0xFFF5EFE6),
             body: Row(
               children: [
                 SizedBox(
@@ -48,6 +49,7 @@ class DashboardScreen extends StatelessWidget {
           );
         } else {
           return Scaffold(
+            backgroundColor: const Color(0xFFF5EFE6),
             appBar: const _MobileAppBar(),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -64,7 +66,7 @@ class DashboardScreen extends StatelessWidget {
   }
 }
 
-// ----------------- Desktop -----------------
+// Keep only the AppBar components since they contain the search functionality
 class _DesktopAppBar extends StatelessWidget {
   const _DesktopAppBar({super.key});
 
@@ -113,7 +115,6 @@ class _DesktopAppBar extends StatelessWidget {
   }
 }
 
-// ----------------- Mobile -----------------
 class _MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
   const _MobileAppBar({super.key});
 
@@ -151,7 +152,6 @@ class _MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
   Size get preferredSize => const Size.fromHeight(110);
 }
 
-// ----------------- Shared UI -----------------
 class _SearchBar extends StatelessWidget {
   const _SearchBar({super.key});
 
