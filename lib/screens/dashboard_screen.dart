@@ -36,19 +36,19 @@ class _DashboardScreenState extends State<DashboardScreen>
         'title': 'Total Credentials',
         'value': '24',
         'icon': Icons.vpn_key,
-        'color': Colors.blue,
+        'color': const Color(0xFF8D6748),
       },
       {
         'title': 'TOTP Codes',
         'value': '8',
         'icon': Icons.shield,
-        'color': Colors.green,
+        'color': const Color(0xFFBFAE99),
       },
       {
         'title': 'Recent Activity',
         'value': '3',
         'icon': Icons.access_time,
-        'color': Colors.orange,
+        'color': const Color(0xFF8D6748),
       },
       {
         'title': 'Security Alerts',
@@ -75,7 +75,12 @@ class _DashboardScreenState extends State<DashboardScreen>
     return FadeTransition(
       opacity: _fadeAnim,
       child: Scaffold(
-        appBar: AppBar(title: const Text('Dashboard')),
+        appBar: AppBar(
+          title: const Text('Dashboard'),
+          backgroundColor: Colors.white.withOpacity(0.7),
+          elevation: 0,
+          centerTitle: true,
+        ),
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -99,10 +104,25 @@ class _DashboardScreenState extends State<DashboardScreen>
                 mainAxisSpacing: 16,
                 children: stats
                     .map(
-                      (stat) => Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      (stat) => Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF8D6748).withOpacity(0.08),
+                              blurRadius: 24,
+                              offset: const Offset(0, 4),
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 6,
+                              offset: const Offset(0, 1.5),
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.3),
+                          ),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(20),
@@ -123,14 +143,21 @@ class _DashboardScreenState extends State<DashboardScreen>
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineMedium
-                                        ?.copyWith(fontWeight: FontWeight.bold),
+                                        ?.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: stat['color'] as Color,
+                                        ),
                                   ),
                                 ],
                               ),
-                              Icon(
-                                stat['icon'] as IconData,
-                                size: 36,
-                                color: stat['color'] as Color,
+                              CircleAvatar(
+                                backgroundColor: (stat['color'] as Color)
+                                    .withOpacity(0.12),
+                                child: Icon(
+                                  stat['icon'] as IconData,
+                                  size: 28,
+                                  color: stat['color'] as Color,
+                                ),
                               ),
                             ],
                           ),
@@ -141,10 +168,18 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               const SizedBox(height: 32),
               // Quick Actions
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -163,6 +198,18 @@ class _DashboardScreenState extends State<DashboardScreen>
                           ElevatedButton.icon(
                             icon: const Icon(Icons.add),
                             label: const Text('Add Credential'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF8D6748),
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 14,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 8,
+                            ),
                             onPressed: () {
                               Navigator.of(
                                 context,
@@ -172,11 +219,25 @@ class _DashboardScreenState extends State<DashboardScreen>
                           OutlinedButton.icon(
                             icon: const Icon(Icons.download),
                             label: const Text('Backup Vault'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF8D6748),
+                              side: const BorderSide(color: Color(0xFF8D6748)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
                             onPressed: () {},
                           ),
                           OutlinedButton.icon(
                             icon: const Icon(Icons.list_alt),
                             label: const Text('View Logs'),
+                            style: OutlinedButton.styleFrom(
+                              foregroundColor: const Color(0xFF8D6748),
+                              side: const BorderSide(color: Color(0xFF8D6748)),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
                             onPressed: () {},
                           ),
                         ],
@@ -187,10 +248,18 @@ class _DashboardScreenState extends State<DashboardScreen>
               ),
               const SizedBox(height: 32),
               // Recent Items
-              Card(
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF8D6748).withOpacity(0.08),
+                      blurRadius: 24,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(color: Colors.white.withOpacity(0.3)),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -203,15 +272,40 @@ class _DashboardScreenState extends State<DashboardScreen>
                       ),
                       const SizedBox(height: 16),
                       ...recentItems.map(
-                        (item) => ListTile(
-                          leading: const Icon(Icons.vpn_key),
-                          title: Text(item['name']!),
-                          subtitle: Text(item['username']!),
-                          trailing: Text(
-                            item['lastUsed']!,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(color: Colors.grey),
+                        (item) => Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white.withOpacity(0.5),
+                          ),
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: const Color(
+                                0xFF8D6748,
+                              ).withOpacity(0.12),
+                              child: const Icon(
+                                Icons.vpn_key,
+                                color: Color(0xFF8D6748),
+                              ),
+                            ),
+                            title: Text(
+                              item['name']!,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            subtitle: Text(
+                              item['username']!,
+                              style: const TextStyle(
+                                fontFamily: 'monospace',
+                                color: Color(0xFFBFAE99),
+                              ),
+                            ),
+                            trailing: Text(
+                              item['lastUsed']!,
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: Colors.grey),
+                            ),
                           ),
                         ),
                       ),
