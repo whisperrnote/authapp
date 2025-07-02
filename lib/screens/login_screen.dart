@@ -179,10 +179,8 @@ class _LoginScreenState extends State<LoginScreen>
                               onPressed: _loading
                                   ? null
                                   : () {
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        _login();
-                                      }
+                                      // Allow navigation to dashboard without validation
+                                      _login();
                                     },
                               child: _loading
                                   ? const SizedBox(

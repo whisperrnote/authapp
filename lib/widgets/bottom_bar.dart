@@ -14,9 +14,14 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final navItems = [
       {'icon': Icons.dashboard, 'label': 'Dashboard', 'route': '/dashboard'},
-      {'icon': Icons.vpn_key, 'label': 'Credentials', 'route': '/credentials'},
+      {'icon': Icons.share, 'label': 'Sharing', 'route': '/sharing'},
+      {
+        'icon': Icons.add_circle,
+        'label': 'New',
+        'route': '/credentials/new',
+        'big': true,
+      },
       {'icon': Icons.shield, 'label': 'TOTP', 'route': '/totp'},
-      {'icon': Icons.folder, 'label': 'Folders', 'route': '/folders'},
       {'icon': Icons.settings, 'label': 'Settings', 'route': '/settings'},
     ];
 
@@ -50,22 +55,23 @@ class BottomBar extends StatelessWidget {
         unselectedItemColor: const Color(0xFFBFAE99),
         showUnselectedLabels: true,
         onTap: (i) => onNavigate(navItems[i]['route'] as String),
-        items: navItems
-            .map(
-              (item) => BottomNavigationBarItem(
-                icon: CircleAvatar(
-                  backgroundColor: currentIndex == navItems.indexOf(item)
-                      ? const Color(0xFF8D6748).withOpacity(0.18)
-                      : const Color(0xFFBFAE99).withOpacity(0.12),
-                  child: Icon(
-                    item['icon'] as IconData,
-                    color: const Color(0xFF8D6748),
-                  ),
-                ),
-                label: item['label'] as String,
+        items: navItems.map((item) {
+          final isBig = item['big'] == true;
+          return BottomNavigationBarItem(
+            icon: CircleAvatar(
+              radius: isBig ? 28 : 20,
+              backgroundColor: currentIndex == navItems.indexOf(item)
+                  ? const Color(0xFF8D6748).withOpacity(0.18)
+                  : const Color(0xFFBFAE99).withOpacity(0.12),
+              child: Icon(
+                item['icon'] as IconData,
+                color: const Color(0xFF8D6748),
+                size: isBig ? 34 : 24,
               ),
-            )
-            .toList(),
+            ),
+            label: item['label'] as String,
+          );
+        }).toList(),
       ),
     );
   }

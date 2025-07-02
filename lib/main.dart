@@ -10,6 +10,7 @@ import 'screens/new_credential_screen.dart';
 import 'screens/folders_screen.dart';
 import 'screens/totp_screen.dart';
 import 'screens/settings_screen.dart';
+import 'screens/sharing.dart';
 
 void main() {
   runApp(const WhisperrAuthApp());
@@ -34,6 +35,7 @@ class WhisperrAuthApp extends StatelessWidget {
             AuthGuard(child: const CredentialsScreen()),
         '/credentials/new': (context) =>
             AuthGuard(child: const NewCredentialScreen()),
+        '/sharing': (context) => AuthGuard(child: const SharingScreen()),
         '/folders': (context) => AuthGuard(child: const FoldersScreen()),
         '/totp': (context) => AuthGuard(child: const TotpScreen()),
         '/settings': (context) => AuthGuard(child: const SettingsScreen()),

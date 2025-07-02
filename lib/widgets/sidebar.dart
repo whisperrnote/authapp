@@ -14,9 +14,14 @@ class Sidebar extends StatelessWidget {
   Widget build(BuildContext context) {
     final navItems = [
       {'icon': Icons.dashboard, 'label': 'Dashboard', 'route': '/dashboard'},
-      {'icon': Icons.vpn_key, 'label': 'Credentials', 'route': '/credentials'},
+      {'icon': Icons.share, 'label': 'Sharing', 'route': '/sharing'},
+      {
+        'icon': Icons.add_circle,
+        'label': 'New',
+        'route': '/credentials/new',
+        'big': true,
+      },
       {'icon': Icons.shield, 'label': 'TOTP', 'route': '/totp'},
-      {'icon': Icons.folder, 'label': 'Folders', 'route': '/folders'},
       {'icon': Icons.settings, 'label': 'Settings', 'route': '/settings'},
     ];
 
@@ -64,36 +69,44 @@ class Sidebar extends StatelessWidget {
                 ],
               ),
             ),
-            ...navItems.map(
-              (item) => ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: selectedRoute == item['route']
-                      ? const Color(0xFF8D6748).withOpacity(0.18)
-                      : const Color(0xFFBFAE99).withOpacity(0.12),
-                  child: Icon(
-                    item['icon'] as IconData,
-                    color: const Color(0xFF8D6748),
+            ...navItems.map((item) {
+              final isSelected = selectedRoute == item['route'];
+              final isBig = item['big'] == true;
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: isBig ? 6 : 0),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: isBig ? 28 : 22,
+                    backgroundColor: isSelected
+                        ? const Color(0xFF8D6748).withOpacity(0.18)
+                        : const Color(0xFFBFAE99).withOpacity(0.12),
+                    child: Icon(
+                      item['icon'] as IconData,
+                      color: const Color(0xFF8D6748),
+                      size: isBig ? 34 : 24,
+                    ),
                   ),
-                ),
-                title: Text(
-                  item['label'] as String,
-                  style: TextStyle(
-                    fontWeight: selectedRoute == item['route']
-                        ? FontWeight.bold
-                        : FontWeight.normal,
-                    color: selectedRoute == item['route']
-                        ? const Color(0xFF8D6748)
-                        : Colors.black87,
+                  title: Text(
+                    item['label'] as String,
+                    style: TextStyle(
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                      color: isSelected
+                          ? const Color(0xFF8D6748)
+                          : Colors.black87,
+                      fontSize: isBig ? 18 : 16,
+                    ),
                   ),
+                  selected: isSelected,
+                  selectedTileColor: const Color(0xFFBFAE99).withOpacity(0.18),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  onTap: () => onNavigate(item['route'] as String),
                 ),
-                selected: selectedRoute == item['route'],
-                selectedTileColor: const Color(0xFFBFAE99).withOpacity(0.18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                onTap: () => onNavigate(item['route'] as String),
-              ),
-            ),
+              );
+            }),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

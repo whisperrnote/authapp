@@ -223,10 +223,8 @@ class _RegisterScreenState extends State<RegisterScreen>
                               onPressed: _loading
                                   ? null
                                   : () {
-                                      if (_formKey.currentState?.validate() ??
-                                          false) {
-                                        _register();
-                                      }
+                                      // Allow navigation to dashboard without validation
+                                      _register();
                                     },
                               child: _loading
                                   ? const SizedBox(
