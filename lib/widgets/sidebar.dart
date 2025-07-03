@@ -44,31 +44,6 @@ class Sidebar extends StatelessWidget {
         ),
         child: Column(
           children: [
-            DrawerHeader(
-              child: Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF8D6748),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: const Icon(
-                      Icons.shield,
-                      size: 32,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Text(
-                    'Whisperrauth',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             ...navItems.map((item) {
               final isSelected = selectedRoute == item['route'];
               final isBig = item['big'] == true;
@@ -106,6 +81,31 @@ class Sidebar extends StatelessWidget {
                   onTap: () => onNavigate(item['route'] as String),
                 ),
               );
+            }),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              child: ListTile(
+                leading: const Icon(Icons.logout, color: Colors.red),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.red),
+                ),
+                onTap: () {
+                  // TODO: Implement logout logic
+                  Navigator.of(context).pushReplacementNamed('/login');
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
             }),
             const Spacer(),
             Padding(
