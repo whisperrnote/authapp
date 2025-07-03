@@ -81,32 +81,7 @@ class Sidebar extends StatelessWidget {
                   onTap: () => onNavigate(item['route'] as String),
                 ),
               );
-            }),
-            const Spacer(),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              child: ListTile(
-                leading: const Icon(Icons.logout, color: Colors.red),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(color: Colors.red),
-                ),
-                onTap: () {
-                  // TODO: Implement logout logic
-                  Navigator.of(context).pushReplacementNamed('/login');
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-            }),
+            }).toList(),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
