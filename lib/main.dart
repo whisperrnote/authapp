@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'logics/auth_service.dart'; // Add this import
 // Screens (to be implemented in lib/screens/)
-import 'screens/landing_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/dashboard_screen.dart';
-import 'screens/credentials_screen.dart';
 import 'screens/new_credential_screen.dart';
-import 'screens/folders_screen.dart';
 import 'screens/totp_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/sharing.dart';
