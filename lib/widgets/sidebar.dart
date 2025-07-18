@@ -81,7 +81,7 @@ class Sidebar extends StatelessWidget {
                   onTap: () => onNavigate(item['route'] as String),
                 ),
               );
-            }).toList(),
+            }),
             const Spacer(),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

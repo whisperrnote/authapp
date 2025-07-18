@@ -13,10 +13,10 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      masterpass: map['masterpass'] ?? null,
+      masterpass: map['masterpass'],
       userId: map['userId'].toString(),
       email: map['email'].toString(),
-      twofa: map['twofa'] ?? null,
+      twofa: map['twofa'],
     );
   }
 

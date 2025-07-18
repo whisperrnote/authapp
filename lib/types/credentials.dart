@@ -31,15 +31,15 @@ class Credentials {
     return Credentials(
       userId: map['userId'].toString(),
       name: map['name'].toString(),
-      url: map['url']?.toString() ?? null,
+      url: map['url']?.toString(),
       username: map['username'].toString(),
-      notes: map['notes']?.toString() ?? null,
-      folderId: map['folderId']?.toString() ?? null,
+      notes: map['notes']?.toString(),
+      folderId: map['folderId']?.toString(),
       tags: List<String>.from(map['tags'] ?? []) ?? [],
-      customFields: map['customFields']?.toString() ?? null,
-      faviconUrl: map['faviconUrl']?.toString() ?? null,
-      createdAt: map['createdAt']?.toString() ?? null,
-      updatedAt: map['updatedAt']?.toString() ?? null,
+      customFields: map['customFields']?.toString(),
+      faviconUrl: map['faviconUrl']?.toString(),
+      createdAt: map['createdAt']?.toString(),
+      updatedAt: map['updatedAt']?.toString(),
       password: map['password'].toString(),
     );
   }

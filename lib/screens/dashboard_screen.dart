@@ -69,7 +69,7 @@ class DashboardScreen extends StatelessWidget {
 
 // ----------------- Desktop AppBar -----------------
 class _DesktopAppBar extends StatelessWidget {
-  const _DesktopAppBar({super.key});
+  const _DesktopAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +118,7 @@ class _DesktopAppBar extends StatelessWidget {
 
 // ----------------- Mobile AppBar -----------------
 class _MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const _MobileAppBar({super.key});
+  const _MobileAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +156,7 @@ class _MobileAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 // ----------------- Search Bar -----------------
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({super.key});
+  const _SearchBar();
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +212,7 @@ class _SearchBar extends StatelessWidget {
 // ----------------- Main Content -----------------
 class _DashboardContent extends StatelessWidget {
   final bool isDesktop;
-  const _DashboardContent({required this.isDesktop, super.key});
+  const _DashboardContent({required this.isDesktop});
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +247,7 @@ class _DashboardContent extends StatelessWidget {
 }
 
 class _FilterRow extends StatelessWidget {
-  const _FilterRow({super.key});
+  const _FilterRow();
 
   @override
   Widget build(BuildContext context) {
@@ -344,7 +344,6 @@ class _PasswordItem extends StatelessWidget {
     required this.username,
     required this.hash,
     required this.isDesktop,
-    super.key,
   });
 
   @override
@@ -411,7 +410,7 @@ class _PasswordItem extends StatelessWidget {
 }
 
 class _CopyIconButton extends StatelessWidget {
-  const _CopyIconButton({super.key});
+  const _CopyIconButton();
 
   @override
   Widget build(BuildContext context) {

@@ -19,9 +19,9 @@ class SecurityLogs {
     return SecurityLogs(
       userId: map['userId'].toString(),
       eventType: map['eventType'].toString(),
-      ipAddress: map['ipAddress']?.toString() ?? null,
-      userAgent: map['userAgent']?.toString() ?? null,
-      details: map['details']?.toString() ?? null,
+      ipAddress: map['ipAddress']?.toString(),
+      userAgent: map['userAgent']?.toString(),
+      details: map['details']?.toString(),
       timestamp: map['timestamp'].toString(),
     );
   }

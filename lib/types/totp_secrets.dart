@@ -29,12 +29,12 @@ class TotpSecrets {
       issuer: map['issuer'].toString(),
       accountName: map['accountName'].toString(),
       secretKey: map['secretKey'].toString(),
-      folderId: map['folderId']?.toString() ?? null,
-      createdAt: map['createdAt']?.toString() ?? null,
-      updatedAt: map['updatedAt']?.toString() ?? null,
-      algorithm: map['algorithm']?.toString() ?? null,
-      digits: map['digits'] ?? null,
-      period: map['period'] ?? null,
+      folderId: map['folderId']?.toString(),
+      createdAt: map['createdAt']?.toString(),
+      updatedAt: map['updatedAt']?.toString(),
+      algorithm: map['algorithm']?.toString(),
+      digits: map['digits'],
+      period: map['period'],
     );
   }
 

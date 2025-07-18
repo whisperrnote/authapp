@@ -292,7 +292,6 @@ class _NewCredentialScreenState extends State<NewCredentialScreen>
                         children: [
                           OutlinedButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('Cancel'),
                             style: OutlinedButton.styleFrom(
                               foregroundColor: const Color(0xFF8D6748),
                               side: const BorderSide(color: Color(0xFF8D6748)),
@@ -300,10 +299,19 @@ class _NewCredentialScreenState extends State<NewCredentialScreen>
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
+                            child: const Text('Cancel'),
                           ),
                           const SizedBox(width: 12),
                           ElevatedButton(
                             onPressed: _loading ? null : _saveCredential,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF8D6748),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 8,
+                            ),
                             child: _loading
                                 ? const SizedBox(
                                     width: 20,
@@ -313,14 +321,6 @@ class _NewCredentialScreenState extends State<NewCredentialScreen>
                                     ),
                                   )
                                 : const Text('Save Credential'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF8D6748),
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 8,
-                            ),
                           ),
                         ],
                       ),

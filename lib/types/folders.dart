@@ -17,9 +17,9 @@ class Folders {
     return Folders(
       userId: map['userId'].toString(),
       name: map['name'].toString(),
-      parentFolderId: map['parentFolderId']?.toString() ?? null,
-      createdAt: map['createdAt']?.toString() ?? null,
-      updatedAt: map['updatedAt']?.toString() ?? null,
+      parentFolderId: map['parentFolderId']?.toString(),
+      createdAt: map['createdAt']?.toString(),
+      updatedAt: map['updatedAt']?.toString(),
     );
   }
 
